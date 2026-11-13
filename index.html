@@ -266,13 +266,16 @@ function addGift() {
     'sb_publishable_bxMJv7AkThq5jW53I_m5RQ_A3djIwqS'
   );
   console.log('RUM connected');
-</script>rumDB.from('listings')
-  .select('id')
-  .limit(1)
-  .then(({ error }) => {
-    alert(error
-      ? 'Ошибка: ' + error.message
-      : 'RUM подключён к базе данных! 🎁');
-  });
+</script>  console.log('RUM connected');
+
+  rumDB.from('listings')
+    .select('id')
+    .limit(1)
+    .then(({ error }) => {
+      alert(error
+        ? 'Ошибка: ' + error.message
+        : 'RUM подключён к базе данных! 🎁');
+    });
+</script>
 </body>
 </html>
