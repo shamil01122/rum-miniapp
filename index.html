@@ -260,4 +260,13 @@ function addGift() {
 }
 </script>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const rumDB = window.supabase.createClient(
+    'https://fqzvszfjhsuvqeioikqs.supabase.co',
+    'sb_publishable_bxMJv7AkThq5jW53I_m5RQ_A3djIwqS'
+  );
+  console.log('RUM connected');
+</script>
+
 </html>
