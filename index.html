@@ -224,7 +224,26 @@ function render(list,id) {
 }
 
 render(gifts,'featured');
-render(gifts,'catalogItems');
+render(gifts,'catalogItems');async function loadListings() {
+  const { data, error } = await rumDB
+    .from('listings')
+    .select('*')
+    .eq('status', 'active');
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const realGifts = data.map(g => ({
+    name: g.gift_title,
+    emoji: '🎁',
+    price: g.price_ton,
+    type: 'all'
+  }));
+
+  render([...gifts, ...realGifts], 'catalogItems');
+}
 
 function showPage(id,btn) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -267,7 +286,7 @@ function addGift() {
   );
 
   console.log('RUM connected');
-
+loadListings();
   rumDB.from('listings')
     .select('id')
     .limit(1)
