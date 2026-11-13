@@ -263,13 +263,18 @@ function buy(name) {
   alert('Подарок '+name+'. Покупки будут доступны после подключения безопасной оплаты TON.');
 }
 
-let myGifts=0;
-function addGift() {
-  const name=document.getElementById('giftName').value.trim();
-  const price=Number(document.getElementById('giftPrice').value);
-  if(!name || !Number.isFinite(price) || price<=0) {
+let myGifts = 0;
+
+async function addGift() {
+  const name = document.getElementById('giftName').value.trim();
+  const price = Number(document.getElementById('giftPrice').value);
+
+  if (!name || !Number.isFinite(price) || price <= 0) {
     alert('Заполни название и правильную цену.');
     return;
+  }
+
+  alert('Форма проверена! Следующим шагом подключим безопасное сохранение объявления.');
   }
   myGifts++;
   document.getElementById('myCount').textContent=myGifts;
