@@ -290,6 +290,7 @@ function addGift() {
   const tg = window.Telegram.WebApp;
 tg.ready();
 
+console.log('Telegram initData:', tg.initData);
 console.log('Telegram user:', tg.initDataUnsafe.user);
 const user = tg.initDataUnsafe.user;
 
