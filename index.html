@@ -176,6 +176,7 @@
   <h2>👤 Мой профиль</h2>
   <div class="panel">
     <h3 id="username">Пользователь RUM</h3>
+    <p id="telegramId" class="muted">Telegram ID: загрузка...</p>
     <p class="muted">Добро пожаловать на маркетплейс!</p>
     <p>💎 Кошелёк: не подключён</p>
     <p>🛍️ Мои покупки: 0</p>
@@ -290,6 +291,15 @@ function addGift() {
 tg.ready();
 
 console.log('Telegram user:', tg.initDataUnsafe.user);
+const user = tg.initDataUnsafe.user;
+
+if (user) {
+  document.getElementById('username').textContent =
+    user.first_name || 'Пользователь RUM';
+
+  document.getElementById('telegramId').textContent =
+    'Telegram ID: ' + user.id;
+}  
 loadListings();
   rumDB.from('listings')
     .select('id')
