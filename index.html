@@ -288,6 +288,7 @@ function addGift() {
 
   console.log('RUM connected');
   const tg = window.Telegram.WebApp;
+  alert('Telegram ID: ' + (tg.initDataUnsafe.user?.id || 'ID не получен'));
 tg.ready();
 
 console.log('Telegram initData:', tg.initData);
