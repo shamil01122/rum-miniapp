@@ -286,6 +286,10 @@ function addGift() {
   );
 
   console.log('RUM connected');
+  const tg = window.Telegram.WebApp;
+tg.ready();
+
+console.log('Telegram user:', tg.initDataUnsafe.user);
 loadListings();
   rumDB.from('listings')
     .select('id')
