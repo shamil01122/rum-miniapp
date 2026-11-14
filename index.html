@@ -349,7 +349,7 @@ async function addGift() {
 
 
 
-async function loadListings() {
+
 
 let giftModels = [];
 
@@ -517,7 +517,11 @@ console.log('Ответ сервера:', data);
   }
 }
 
-render(gifts, 'featured');
+render(gifts, 'featured');console.log('RUM JavaScript загружен');
+console.log('showPage:', typeof showPage);
+console.log('filterItems:', typeof filterItems);
+console.log('addGift:', typeof addGift);
+console.log('loadGiftModels:', typeof loadGiftModels);
 render(gifts, 'catalogItems');
 loadListings();
 verifyTelegramUser();
