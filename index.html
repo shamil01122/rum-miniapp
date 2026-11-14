@@ -159,20 +159,40 @@
   <div class="products" id="catalogItems"></div>
 </section>
 
+
 <section id="sell" class="page">
   <h2>💰 Продать подарок</h2>
   <div class="panel">
-    <p>Выставь свой подарок на маркетплейсе RUM.</p>
-    <label>Название подарка</label>
-    <input id="giftName" placeholder="Например: Rose">
-    <label>Номер подарка</label>
-<input id="giftNumber" type="text" placeholder="Например: 12345">
+    <p>Выбери свой Telegram NFT.</p>
+
+    <label>Коллекция подарка</label>
+    <select id="giftName" onchange="loadGiftModels()">
+      <option value="">Загрузка подарков...</option>
+    </select>
+
+    <label>Модель подарка</label>
+    <select id="giftModel" onchange="updateGiftPreview()" disabled>
+      <option value="">Сначала выбери подарок</option>
+    </select>
+
+    <div id="giftPreviewBox" style="display:none; text-align:center; margin:15px 0;">
+      <img id="giftPreview" src="" alt="Модель подарка"
+        style="width:150px; height:150px; object-fit:contain;">
+    </div>
+
+    <label>Номер NFT</label>
+    <input id="giftNumber" type="text" placeholder="Например: 12345">
+
     <label>Цена в TON</label>
     <input id="giftPrice" type="number" min="0.01" step="0.01" placeholder="Например: 5">
+
     <button class="wide" onclick="addGift()">Выставить подарок</button>
-    <p class="muted">Пока это демонстрационная заявка. Реальная передача подарка и расчёт ещё не подключены.</p>
+
+    <p class="muted">Каталог моделей: GiftChanges API</p>
+    <p class="muted">Реальная передача подарка и расчёт ещё не подключены.</p>
   </div>
 </section>
+
 
 <section id="profile" class="page">
   <h2>👤 Мой профиль</h2>
