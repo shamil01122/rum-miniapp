@@ -323,13 +323,14 @@ async function loadListings() {
     return;
   }
 
-  const realGifts = (data || []).map(g => ({
-    name: g.gift_title,
-    emoji: '🎁',
-    price: g.price_ton,
-    sellerName: g.profiles?.display_name || g.profiles?.username || 'Продавец RUM',
-    type: 'all'
-  }));
+const realGifts = (data || []).map(g => ({
+  name: g.gift_title,
+  giftNumber: g.gift_number,
+  emoji: '🎁',
+  price: g.price_ton,
+  sellerName: g.profiles?.display_name || g.profiles?.username || 'Продавец RUM',
+  type: 'all'
+}));
 
   allGifts = [...gifts, ...realGifts];
   render(allGifts, 'catalogItems');
