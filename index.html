@@ -334,6 +334,96 @@ async function addGift() {
 
 
 async function loadListings() {
+let giftModels = [];
+
+async function loadGiftCatalog() {
+  const giftSelect = document.getElementById('giftName');
+
+  try {
+    giftSelect.innerHTML = '<option value="">Загружаем подарки...</option>';
+
+    const response = await fetch('https://api.changes.tg/gifts');
+
+    if (!response.ok) throw new Error('Не удалось загрузить подарки');
+
+    const gifts = await response.json();
+
+    giftSelect.innerHTML = '<option value="">Выбери подарок</option>';
+
+    gifts.forEach(gift => {
+      const option = document.createElement('option');
+      option.value = gift;
+      option.textContent = gift;
+      giftSelect.appendChild(option);
+    });
+
+  } catch (error) {
+    console.error('Ошибка каталога:', error);
+    giftSelect.innerHTML = '<option value="">Ошибка загрузки. Обнови страницу</option>';
+  }
+}
+
+async function loadGiftModels() {
+  const giftName = document.getElementById('giftName').value;
+  const modelSelect = document.getElementById('giftModel');
+
+  modelSelect.disabled = true;
+  modelSelect.innerHTML = '<option value="">Загружаем модели...</option>';
+
+  document.getElementById('giftPreviewBox').style.display = 'none';
+
+  if (!giftName) {
+    modelSelect.innerHTML = '<option value="">Сначала выбери подарок</option>';
+    return;
+  }
+
+  try {
+    const url = 'https://api.changes.tg/models/' + encodeURIComponent(giftName);
+    const response = await fetch(url);
+
+    if (!response.ok) throw new Error('Не удалось загрузить модели');
+
+    giftModels = await response.json();
+
+    modelSelect.innerHTML = '<option value="">Выбери модель</option>';
+
+    giftModels.forEach((model, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = model.name + ' — ' + model.rarity + '%';
+      modelSelect.appendChild(option);
+    });
+
+    modelSelect.disabled = false;
+
+  } catch (error) {
+    console.error('Ошибка моделей:', error);
+    modelSelect.innerHTML = '<option value="">Ошибка загрузки моделей</option>';
+  }
+}
+
+function updateGiftPreview() {
+  const index = document.getElementById('giftModel').value;
+  const previewBox = document.getElementById('giftPreviewBox');
+  const preview = document.getElementById('giftPreview');
+
+  if (index === '') {
+    previewBox.style.display = 'none';
+    return;
+  }
+
+  const model = giftModels[Number(index)];
+
+  if (!model || !model.documentId) return;
+
+  preview.src = 'https://api.changes.tg/document/' +
+    encodeURIComponent(model.documentId) + '.png?size=256';
+
+  previewBox.style.display = 'block';
+}
+
+loadGiftCatalog();
+
   const { data, error } = await rumDB
     .from('listings')
     .select('*')
