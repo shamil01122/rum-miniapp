@@ -665,13 +665,15 @@ tonConnectUI.onStatusChange(wallet => {
   const status = document.getElementById('walletStatus');
 
   if (wallet) {
-    const address = wallet.account.address;
-    const proof = wallet.connectItems?.tonProof;
-    const proofInfo = JSON.stringify(wallet.connectItems || {});
-status.textContent += ' | Ответ: ' + proofInfo.slice(0, 150);
 
-    status.textContent = '💎 Кошелёк: ' +
-      address.slice(0, 6) + '...' + address.slice(-6);
+const address = wallet.account.address;
+const proof = wallet.connectItems?.tonProof;
+const proofInfo = JSON.stringify(wallet.connectItems || {});
+
+status.textContent = '💎 Кошелёк: ' +
+  address.slice(0, 6) + '...' + address.slice(-6);
+
+status.textContent += ' | Ответ: ' + proofInfo.slice(0, 150);
 
 
 if (proof?.proof) {
