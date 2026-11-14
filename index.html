@@ -667,6 +667,8 @@ tonConnectUI.onStatusChange(wallet => {
   if (wallet) {
     const address = wallet.account.address;
     const proof = wallet.connectItems?.tonProof;
+    const proofInfo = JSON.stringify(wallet.connectItems || {});
+status.textContent += ' | Ответ: ' + proofInfo.slice(0, 150);
 
     status.textContent = '💎 Кошелёк: ' +
       address.slice(0, 6) + '...' + address.slice(-6);
