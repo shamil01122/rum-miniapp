@@ -275,7 +275,7 @@ async function addGift() {
     return;
   }
 
-  alert('Форма проверена! Следующим шагом подключим безопасное сохранение объявления.');
+  alert('Форма проверена!');
 }
 
   myGifts++;
@@ -293,18 +293,7 @@ async function addGift() {
   );
 
   console.log('RUM connected');
-  const tg = window.Telegram.WebApp;
-tg.ready();
 
-
-const user = tg.initDataUnsafe.user;
-
-if (user) {
-  document.getElementById('username').textContent =
-    user.first_name || 'Пользователь RUM';
-
-// Данные Telegram не отображаем на странице
-}  
 loadListings();
   rumDB.from('listings')
     .select('id')
