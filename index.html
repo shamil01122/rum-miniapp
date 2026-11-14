@@ -316,7 +316,7 @@ async function addGift() {
 async function loadListings() {
   const { data, error } = await rumDB
     .from('listings')
-    .select('*, profiles!listings_seller_id_fkey(display_name, username)')
+    .select('*')
     .eq('status', 'active');
 
   if (error) {
