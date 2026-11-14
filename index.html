@@ -190,17 +190,18 @@
   <button onclick="showPage('profile',this)">👤<br>Профиль</button>
 </nav>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const tg = window.Telegram?.WebApp;
 if (tg) {
   tg.ready();
   tg.expand();
-  const user = tg.initDataUnsafe?.user;
-  if (user) {
-    document.getElementById('username').textContent =
-      user.first_name || 'Пользователь RUM';
-  }
 }
+
+const rumDB = window.supabase.createClient(
+  'https://fqzvszfjhsuvqeioikqs.supabase.co',
+  'sb_publishable_bxMJv7AkThq5jW53I_m5RQ_A3djIwqS'
+);
 
 const gifts = [
   {name:'Plush Pepe',emoji:'🐸',price:12,type:'rare'},
@@ -211,8 +212,11 @@ const gifts = [
   {name:'Trophy',emoji:'🏆',price:5,type:'classic'}
 ];
 
-function render(list,id) {
-  document.getElementById(id).innerHTML = list.map((g,i)=>`
+let allGifts = [...gifts];
+let myGifts = 0;
+
+function render(list, id) {
+  document.getElementById(id).innerHTML = list.map(g => `
     <div class="product">
       <div class="gift">${g.emoji}</div>
       <h3>${g.name}</h3>
@@ -223,48 +227,22 @@ function render(list,id) {
   `).join('');
 }
 
-render(gifts,'featured');
-render(gifts,'catalogItems');async function loadListings() {
-  const { data, error } = await rumDB
-    .from('listings')
-    .select('*')
-    .eq('status', 'active');
-
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  const realGifts = data.map(g => ({
-    name: g.gift_title,
-    emoji: '🎁',
-    price: g.price_ton,
-    type: 'all'
-  }));
-
-  render([...gifts, ...realGifts], 'catalogItems');
-}
-
-function showPage(id,btn) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  else document.querySelectorAll('.nav button')[['home','catalog','sell','profile'].indexOf(id)].classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
 }
 
-function filterItems(type,btn) {
-  document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
+function filterItems(type, btn) {
+  document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  render(type==='all'?gifts:gifts.filter(g=>g.type===type),'catalogItems');
+  render(type === 'all' ? allGifts : allGifts.filter(g => g.type === type), 'catalogItems');
 }
 
 function buy(name) {
-  alert('Подарок '+name+'. Покупки будут доступны после подключения безопасной оплаты TON.');
+  alert('Подарок ' + name + '. Покупки пока не подключены.');
 }
-
-
-let myGifts = 0;
 
 async function addGift() {
   const name = document.getElementById('giftName').value.trim();
@@ -277,40 +255,10 @@ async function addGift() {
 
   myGifts++;
   document.getElementById('myCount').textContent = myGifts;
-
-  alert('Заявка проверена!');
-
+  alert('Это демонстрационная заявка. Объявление пока не сохранено.');
   document.getElementById('giftName').value = '';
   document.getElementById('giftPrice').value = '';
 }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  const rumDB = window.supabase.createClient(
-    'https://fqzvszfjhsuvqeioikqs.supabase.co',
-    'sb_publishable_bxMJv7AkThq5jW53I_m5RQ_A3djIwqS'
-  );
-
-  console.log('RUM connected');
-
-loadListings();
-
-rumDB.from('listings')
-  .select('id')
-  .limit(1)
-  .then(({ error }) => {
-    if (error) {
-      console.error('Ошибка Supabase:', error);
-    }
-  });
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-const rumDB = window.supabase.createClient(
-  'https://fqzvszfjhsuvqeioikqs.supabase.co',
-  'sb_publishable_bxMJv7AkThq5jW53I_m5RQ_A3djIwqS'
-);
 
 async function loadListings() {
   const { data, error } = await rumDB
@@ -330,9 +278,50 @@ async function loadListings() {
     type: 'all'
   }));
 
-  render([...gifts, ...realGifts], 'catalogItems');
+  allGifts = [...gifts, ...realGifts];
+  render(allGifts, 'catalogItems');
 }
 
+async function verifyTelegramUser() {
+  if (!tg || !tg.initData) {
+    console.log('Открой RUM через Telegram.');
+    return;
+  }
+
+  try {
+    const result = await fetch(
+      'https://fqzvszfjhsuvqeioikqs.supabase.co/functions/v1/dynamic-function',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': 'sb_publishable_bxMJv7AkThq5jW53I_m5RQ_A3djIwqS',
+          'Authorization': 'Bearer sb_publishable_bxMJv7AkThq5jW53I_m5RQ_A3djIwqS'
+        },
+        body: JSON.stringify({ initData: tg.initData })
+      }
+    );
+
+    const data = await result.json();
+
+    if (!result.ok) {
+      console.error('Ошибка Telegram:', data);
+      return;
+    }
+
+    document.getElementById('username').textContent =
+      data.user.first_name || 'Пользователь RUM';
+
+    console.log('Telegram подтверждён:', data.user);
+  } catch (error) {
+    console.error('Ошибка подключения:', error);
+  }
+}
+
+render(gifts, 'featured');
+render(gifts, 'catalogItems');
 loadListings();
+verifyTelegramUser();
+</script>
 </body>
 </html>
