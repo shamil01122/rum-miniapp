@@ -611,7 +611,25 @@ console.log('Ответ сервера:', data);
   }
 }
 
-render(gifts, 'featured');console.log('RUM JavaScript загружен');
+const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+  manifestUrl: 'https://shamil01122.github.io/rum-miniapp/tonconnect-manifest.json',
+  buttonRootId: 'tonConnectButton'
+});
+
+tonConnectUI.onStatusChange(wallet => {
+  const status = document.getElementById('walletStatus');
+
+  if (wallet) {
+    const address = wallet.account.address;
+    status.textContent = '💎 Кошелёк: ' +
+      address.slice(0, 6) + '...' + address.slice(-6);
+  } else {
+    status.textContent = '💎 Кошелёк: не подключён';
+  }
+});
+
+render(gifts, 'featured');
+console.log('RUM JavaScript загружен');
 console.log('showPage:', typeof showPage);
 console.log('filterItems:', typeof filterItems);
 console.log('addGift:', typeof addGift);
