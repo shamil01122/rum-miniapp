@@ -263,6 +263,7 @@ function buy(name) {
   alert('Подарок '+name+'. Покупки будут доступны после подключения безопасной оплаты TON.');
 }
 
+
 let myGifts = 0;
 
 async function addGift() {
@@ -275,7 +276,8 @@ async function addGift() {
   }
 
   alert('Форма проверена! Следующим шагом подключим безопасное сохранение объявления.');
-  }
+}
+
   myGifts++;
   document.getElementById('myCount').textContent=myGifts;
   alert('Демонстрационная заявка создана! Реальная публикация появится после подключения сервера.');
