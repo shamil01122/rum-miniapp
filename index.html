@@ -684,7 +684,7 @@ tonConnectUI.onStatusChange(wallet => {
     address.slice(0, 6) + '...' + address.slice(-6);
 
   status.textContent +=
-    ' | ConnectItems: ' + JSON.stringify(connectItems);
+' | ConnectItems: ' + JSON.stringify(connectItems, null, 2);
 
   if (item?.proof) {
     status.textContent += ' | TON Proof получен';
