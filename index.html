@@ -316,7 +316,7 @@ async function addGift() {
 async function loadListings() {
   const { data, error } = await rumDB
     .from('listings')
-.select('*')
+    .select('*')
     .eq('status', 'active');
 
   if (error) {
@@ -324,14 +324,31 @@ async function loadListings() {
     return;
   }
 
-const realGifts = (data || []).map(g => ({
-  name: g.gift_title,
-  giftNumber: g.gift_number,
-  emoji: '🎁',
-  price: g.price_ton,
-  sellerName: g.profiles?.display_name || g.profiles?.username || 'Продавец RUM',
-  type: 'all'
-}));
+  const sellerIds = [...new Set((data || []).map(g => g.seller_id))];
+
+  const { data: profiles, error: profileError } = await rumDB
+    .from('profiles')
+    .select('id, username, display_name')
+    .in('id', sellerIds);
+
+  if (profileError) {
+    console.error('Ошибка загрузки продавцов:', profileError);
+  }
+
+  const realGifts = (data || []).map(g => {
+    const seller = (profiles || []).find(p => p.id === g.seller_id);
+
+    return {
+      name: g.gift_title,
+      giftNumber: g.gift_number,
+      emoji: '🎁',
+      price: g.price_ton,
+      sellerName: seller?.username
+        ? '@' + seller.username
+        : seller?.display_name || 'Продавец RUM',
+      type: 'all'
+    };
+  });
 
   allGifts = [...gifts, ...realGifts];
   render(allGifts, 'catalogItems');
