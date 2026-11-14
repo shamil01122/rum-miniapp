@@ -241,7 +241,11 @@ let myGifts = 0;
 function render(list, id) {
   document.getElementById(id).innerHTML = list.map(g => `
     <div class="product">
-      <div class="gift">${g.emoji}</div>
+<div class="gift">
+  ${g.imageUrl
+    ? `<img src="${g.imageUrl}" alt="Подарок" style="width:100%;height:100%;object-fit:contain;">`
+    : g.emoji}
+</div>
       <h3>${g.name}</h3>
       <div class="muted">Telegram Gift</div>
       <div class="muted">Номер: ${g.giftNumber || 'Не указан'}</div>
