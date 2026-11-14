@@ -655,7 +655,10 @@ tonConnectUI.setConnectRequestParameters({
     });
 
     console.log('RUM: TON Proof запрос готов');
-    console.log('RUM payload:', data.payload);
+const walletStatus = document.getElementById('walletStatus');
+if (walletStatus) {
+  walletStatus.textContent = '💎 TON Proof запрос отправлен';
+}
   } catch (error) {
     console.error('TON Proof:', error);
     tonConnectUI.setConnectRequestParameters(null);
