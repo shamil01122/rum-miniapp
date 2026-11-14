@@ -694,6 +694,8 @@ tonConnectUI.onStatusChange(wallet => {
     status.textContent += ' | TON Proof отсутствует в ответе';
     console.log('TON Proof item:', item);
     console.log('Wallet device:', wallet.device);
+    status.textContent += ' | Features: ' +
+  JSON.stringify(wallet.device?.features || []);
     console.log('Connect items:', wallet.connectItems);
   }
 });
