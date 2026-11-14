@@ -283,8 +283,11 @@ async function loadListings() {
 }
 
 async function verifyTelegramUser() {
+  console.log('Telegram WebApp:', tg);
+  console.log('Telegram initData:', tg?.initData);
+
   if (!tg || !tg.initData) {
-    console.log('Открой RUM через Telegram.');
+    document.getElementById('username').textContent = 'Telegram не передал данные';
     return;
   }
 
