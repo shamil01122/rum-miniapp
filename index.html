@@ -292,12 +292,9 @@ async function addGift() {
 
   console.log('RUM connected');
   const tg = window.Telegram.WebApp;
-  alert('Telegram ID: ' + (tg.initDataUnsafe.user?.id || 'ID не получен'));
 tg.ready();
 
-console.log('Telegram initData:', tg.initData);
-console.log('Telegram user:', tg.initDataUnsafe.user);
-console.log('Telegram ID:', tg.initDataUnsafe.user?.id);
+
 const user = tg.initDataUnsafe.user;
 
 if (user) {
