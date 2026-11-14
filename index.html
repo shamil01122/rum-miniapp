@@ -674,10 +674,11 @@ tonConnectUI.onStatusChange(wallet => {
     return;
   }
 
-  const address = wallet.account.address;
-  const item = wallet.connectItems?.tonProof;
-  status.textContent += ' | Device: ' +
-  JSON.stringify(wallet.device?.features || []);
+const address = wallet.account.address;
+const item = wallet.connectItems?.tonProof;
+
+status.textContent += ' | ConnectItems: ' +
+  JSON.stringify(wallet.connectItems || {});
 
   status.textContent =
     '💎 Кошелёк: ' +
