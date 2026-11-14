@@ -671,11 +671,18 @@ tonConnectUI.onStatusChange(wallet => {
     status.textContent = '💎 Кошелёк: ' +
       address.slice(0, 6) + '...' + address.slice(-6);
 
-    if (proof?.proof) {
-      console.log('RUM: TON Proof получен');
-    } else {
-      console.log('RUM: TON Proof не получен');
-    }
+
+if (proof?.proof) {
+  status.textContent += ' | TON Proof получен';
+  console.log('RUM: TON Proof получен');
+} else if (proof?.error) {
+  status.textContent += ' | TON Proof: ошибка';
+  console.log('TON Proof error:', proof.error);
+} else {
+  status.textContent += ' | TON Proof не получен';
+  console.log('RUM: TON Proof не получен');
+}
+
   } else {
     status.textContent = '💎 Кошелёк: не подключён';
   }
