@@ -304,5 +304,35 @@ rumDB.from('listings')
     }
   });
 </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const rumDB = window.supabase.createClient(
+  'https://fqzvszfjhsuvqeioikqs.supabase.co',
+  'sb_publishable_bxMJv7AkThq5jW53I_m5RQ_A3djIwqS'
+);
+
+async function loadListings() {
+  const { data, error } = await rumDB
+    .from('listings')
+    .select('*')
+    .eq('status', 'active');
+
+  if (error) {
+    console.error('Ошибка загрузки подарков:', error);
+    return;
+  }
+
+  const realGifts = (data || []).map(g => ({
+    name: g.gift_title,
+    emoji: '🎁',
+    price: g.price_ton,
+    type: 'all'
+  }));
+
+  render([...gifts, ...realGifts], 'catalogItems');
+}
+
+loadListings();
 </body>
 </html>
