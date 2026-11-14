@@ -460,16 +460,18 @@ async function loadListings() {
   const realGifts = (data || []).map(g => {
     const seller = (profiles || []).find(p => p.id === g.seller_id);
 
-    return {
-      name: g.gift_title,
-      giftNumber: g.gift_number,
-      emoji: '🎁',
-      price: g.price_ton,
-      sellerName: seller?.username
-        ? '@' + seller.username
-        : seller?.display_name || 'Продавец RUM',
-      type: 'all'
-    };
+return {
+  name: g.gift_title,
+  giftNumber: g.gift_number,
+  giftModel: g.gift_model,
+  imageUrl: g.image_url,
+  emoji: '🎁',
+  price: g.price_ton,
+  sellerName: seller?.username
+    ? '@' + seller.username
+    : seller?.display_name || 'Продавец RUM',
+  type: 'all'
+};
   });
 
   allGifts = [...gifts, ...realGifts];
