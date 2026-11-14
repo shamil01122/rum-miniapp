@@ -312,7 +312,8 @@ async function verifyTelegramUser() {
     document.getElementById('username').textContent =
       data.user.first_name || 'Пользователь RUM';
 
-    console.log('Telegram подтверждён:', data.user);
+console.log('Telegram initData:', tg.initData);
+console.log('Ответ сервера:', data);
   } catch (error) {
     console.error('Ошибка подключения:', error);
   }
