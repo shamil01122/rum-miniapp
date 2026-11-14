@@ -666,6 +666,7 @@ if (walletStatus) {
 })();
 
 
+
 tonConnectUI.onStatusChange(wallet => {
   const status = document.getElementById('walletStatus');
 
@@ -674,32 +675,29 @@ tonConnectUI.onStatusChange(wallet => {
     return;
   }
 
-const address = wallet.account.address;
-const item = wallet.connectItems?.tonProof;
-
-status.textContent += ' | ConnectItems: ' +
-  JSON.stringify(wallet.connectItems || {});
+  const address = wallet.account.address;
+  const connectItems = wallet.connectItems || {};
+  const item = connectItems.tonProof;
 
   status.textContent =
     '💎 Кошелёк: ' +
     address.slice(0, 6) + '...' + address.slice(-6);
 
+  status.textContent +=
+    ' | ConnectItems: ' + JSON.stringify(connectItems);
+
   if (item?.proof) {
     status.textContent += ' | TON Proof получен';
-    console.log('RUM: TON Proof получен');
   } else if (item?.error) {
-    status.textContent += ' | Ошибка TON Proof: ' +
-      JSON.stringify(item.error);
-    console.log('TON Proof error:', item.error);
+    status.textContent +=
+      ' | Ошибка TON Proof: ' + JSON.stringify(item.error);
   } else {
-    status.textContent += ' | TON Proof отсутствует в ответе';
-    console.log('TON Proof item:', item);
-    console.log('Wallet device:', wallet.device);
-status.textContent += ' | Items: ' +
-  JSON.stringify(wallet.connectItems || {});
-    console.log('Connect items:', wallet.connectItems);
+    status.textContent += ' | TON Proof отсутствует';
   }
+
+  console.log('RUM ConnectItems:', connectItems);
 });
+
 
 
 
