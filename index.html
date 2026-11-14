@@ -304,8 +304,7 @@ if (user) {
   document.getElementById('username').textContent =
     user.first_name || 'Пользователь RUM';
 
- document.getElementById('telegramId').textContent =
-  'Данные Telegram: ' + JSON.stringify(user);
+// Данные Telegram не отображаем на странице
 }  
 loadListings();
   rumDB.from('listings')
