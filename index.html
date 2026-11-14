@@ -302,10 +302,11 @@ async function addGift() {
 }
 
 
+
 async function loadListings() {
   const { data, error } = await rumDB
     .from('listings')
-    .select('*')
+    .select('*, profiles!listings_seller_id_fkey(display_name, username)')
     .eq('status', 'active');
 
   if (error) {
@@ -317,6 +318,7 @@ async function loadListings() {
     name: g.gift_title,
     emoji: '🎁',
     price: g.price_ton,
+    sellerName: g.profiles?.display_name || g.profiles?.username || 'Продавец RUM',
     type: 'all'
   }));
 
