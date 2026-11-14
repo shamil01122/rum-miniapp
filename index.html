@@ -647,12 +647,14 @@ tonConnectUI.setConnectRequestParameters({
       throw new Error('Не удалось получить запрос TON Proof');
     }
 
-    tonConnectUI.setConnectRequestParameters({
-      state: 'ready',
-      value: {
-        tonProof: data.payload
-      }
-    });
+tonConnectUI.setConnectRequestParameters({
+  state: 'ready',
+  value: {
+    tonProof: {
+      value: data.payload
+    }
+  }
+});
 
     console.log('RUM: TON Proof запрос готов');
 const walletStatus = document.getElementById('walletStatus');
