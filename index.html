@@ -655,6 +655,7 @@ tonConnectUI.setConnectRequestParameters({
     });
 
     console.log('RUM: TON Proof запрос готов');
+    console.log('RUM payload:', data.payload);
   } catch (error) {
     console.error('TON Proof:', error);
     tonConnectUI.setConnectRequestParameters(null);
