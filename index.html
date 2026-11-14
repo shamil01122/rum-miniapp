@@ -224,6 +224,7 @@ function render(list, id) {
       <div class="gift">${g.emoji}</div>
       <h3>${g.name}</h3>
       <div class="muted">Telegram Gift</div>
+      <div class="muted">Номер: ${g.giftNumber || 'Не указан'}</div>
       <div class="muted">Продавец: ${g.sellerName || 'Продавец RUM'}</div>
       <div class="price">${g.price} TON</div>
       <button onclick="buy('${g.name}')">Подробнее</button>
