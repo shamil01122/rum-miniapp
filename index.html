@@ -249,8 +249,10 @@ function buy(name) {
 }
 
 
+
 async function addGift() {
   const name = document.getElementById('giftName').value.trim();
+  const giftNumber = document.getElementById('giftNumber').value.trim();
   const price = Number(document.getElementById('giftPrice').value);
 
   if (!name || !Number.isFinite(price) || price <= 0) {
@@ -278,6 +280,7 @@ async function addGift() {
           action: 'create_listing',
           initData: tg.initData,
           giftTitle: name,
+          giftNumber: giftNumber,
           priceTon: price
         })
       }
@@ -294,6 +297,7 @@ async function addGift() {
     myGifts++;
     document.getElementById('myCount').textContent = myGifts;
     document.getElementById('giftName').value = '';
+    document.getElementById('giftNumber').value = '';
     document.getElementById('giftPrice').value = '';
 
     await loadListings();
@@ -304,6 +308,7 @@ async function addGift() {
     alert('Ошибка соединения. Попробуй ещё раз.');
   }
 }
+
 
 
 
