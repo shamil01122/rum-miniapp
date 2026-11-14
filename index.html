@@ -295,14 +295,15 @@ async function addGift() {
   console.log('RUM connected');
 
 loadListings();
-  rumDB.from('listings')
-    .select('id')
-    .limit(1)
-    .then(({ error }) => {
-      alert(error
-        ? 'Ошибка: ' + error.message
-        : 'RUM подключён к базе данных! 🎁');
-    });
+
+rumDB.from('listings')
+  .select('id')
+  .limit(1)
+  .then(({ error }) => {
+    if (error) {
+      console.error('Ошибка Supabase:', error);
+    }
+  });
 </script>
 </body>
 </html>
