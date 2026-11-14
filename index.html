@@ -244,6 +244,7 @@ function buy(name) {
   alert('Подарок ' + name + '. Покупки пока не подключены.');
 }
 
+
 async function addGift() {
   const name = document.getElementById('giftName').value.trim();
   const price = Number(document.getElementById('giftPrice').value);
@@ -253,12 +254,53 @@ async function addGift() {
     return;
   }
 
-  myGifts++;
-  document.getElementById('myCount').textContent = myGifts;
-  alert('Это демонстрационная заявка. Объявление пока не сохранено.');
-  document.getElementById('giftName').value = '';
-  document.getElementById('giftPrice').value = '';
+  const tg = window.Telegram.WebApp;
+
+  if (!tg || !tg.initData) {
+    alert('Открой RUM через Telegram.');
+    return;
+  }
+
+  try {
+    const result = await fetch(
+      'https://fqzvszfjhsuvqeioikqs.supabase.co/functions/v1/dynamic-function',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': 'sb_publishable_bxMJv7AkThq5jW53I_m5RQ_A3djIwqS'
+        },
+        body: JSON.stringify({
+          action: 'create_listing',
+          initData: tg.initData,
+          giftTitle: name,
+          priceTon: price
+        })
+      }
+    );
+
+    const data = await result.json();
+
+    if (!result.ok || !data.ok) {
+      console.error('Ошибка публикации:', data);
+      alert('Не удалось опубликовать объявление. Попробуй ещё раз.');
+      return;
+    }
+
+    myGifts++;
+    document.getElementById('myCount').textContent = myGifts;
+    document.getElementById('giftName').value = '';
+    document.getElementById('giftPrice').value = '';
+
+    await loadListings();
+
+    alert('🎉 Объявление успешно опубликовано!');
+  } catch (error) {
+    console.error(error);
+    alert('Ошибка соединения. Попробуй ещё раз.');
+  }
 }
+
 
 async function loadListings() {
   const { data, error } = await rumDB
