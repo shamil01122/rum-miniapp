@@ -271,13 +271,19 @@ function buy(name) {
 
 
 
+
 async function addGift() {
   const name = document.getElementById('giftName').value.trim();
+  const modelIndex = document.getElementById('giftModel').value;
   const giftNumber = document.getElementById('giftNumber').value.trim();
   const price = Number(document.getElementById('giftPrice').value);
 
-  if (!name || !Number.isFinite(price) || price <= 0) {
-    alert('Заполни название и правильную цену.');
+  const model = modelIndex !== ''
+    ? giftModels[Number(modelIndex)]
+    : null;
+
+  if (!name || !model || !giftNumber || !Number.isFinite(price) || price <= 0) {
+    alert('Выбери подарок и модель, укажи номер NFT и правильную цену.');
     return;
   }
 
@@ -287,6 +293,9 @@ async function addGift() {
     alert('Открой RUM через Telegram.');
     return;
   }
+
+  const imageUrl = 'https://api.changes.tg/document/' +
+    encodeURIComponent(model.documentId) + '.png?size=256';
 
   try {
     const result = await fetch(
@@ -301,7 +310,9 @@ async function addGift() {
           action: 'create_listing',
           initData: tg.initData,
           giftTitle: name,
+          giftModel: model.name,
           giftNumber: giftNumber,
+          imageUrl: imageUrl,
           priceTon: price
         })
       }
@@ -317,9 +328,13 @@ async function addGift() {
 
     myGifts++;
     document.getElementById('myCount').textContent = myGifts;
+
     document.getElementById('giftName').value = '';
+    document.getElementById('giftModel').value = '';
+    document.getElementById('giftModel').disabled = true;
     document.getElementById('giftNumber').value = '';
     document.getElementById('giftPrice').value = '';
+    document.getElementById('giftPreviewBox').style.display = 'none';
 
     await loadListings();
 
@@ -329,6 +344,7 @@ async function addGift() {
     alert('Ошибка соединения. Попробуй ещё раз.');
   }
 }
+
 
 
 
