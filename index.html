@@ -215,18 +215,18 @@ const gifts = [
 let allGifts = [...gifts];
 let myGifts = 0;
 
+
 function render(list, id) {
   document.getElementById(id).innerHTML = list.map(g => `
- 
-<div class="product">
-  <div class="gift">${g.emoji}</div>
-  <h3>${g.name}</h3>
-  <div class="muted">Telegram Gift</div>
-  <div class="muted">Продавец: ${g.sellerName || 'Продавец RUM'}</div>
-  <div class="price">${g.price} TON</div>
-  <button onclick="buy('${g.name}')">Подробнее</button>
-</div>
-
+    <div class="product">
+      <div class="gift">${g.emoji}</div>
+      <h3>${g.name}</h3>
+      <div class="muted">Telegram Gift</div>
+      <div class="muted">Продавец: ${g.sellerName || 'Продавец RUM'}</div>
+      <div class="price">${g.price} TON</div>
+      <button onclick="buy('${g.name}')">Подробнее</button>
+    </div>
+  `).join('');
 }
 
 function showPage(id, btn) {
