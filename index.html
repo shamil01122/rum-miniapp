@@ -275,14 +275,13 @@ async function addGift() {
     return;
   }
 
-  alert('Форма проверена!');
-}
-
   myGifts++;
-  document.getElementById('myCount').textContent=myGifts;
-  alert('Демонстрационная заявка создана! Реальная публикация появится после подключения сервера.');
-  document.getElementById('giftName').value='';
-  document.getElementById('giftPrice').value='';
+  document.getElementById('myCount').textContent = myGifts;
+
+  alert('Заявка проверена!');
+
+  document.getElementById('giftName').value = '';
+  document.getElementById('giftPrice').value = '';
 }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
